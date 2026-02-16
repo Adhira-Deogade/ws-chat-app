@@ -1,11 +1,19 @@
-import { createServer } from 'http'
-import { Server } from 'socket.io'
+import { createServer } from "http"
+import { Server } from "socket.io"
 
 const httpServer = createServer()
-
+// cors: {
+//         origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5500", "http://127.0.0.1:5500"]
+//     }
 const io = new Server(httpServer, {
     cors: {
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5500", "http://127.0.0.1:5500"]
+        origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
+        // Add this line to explicitly set the CORS header
+        headers: {
+            "Access-Control-Allow-Origin": "http://localhost:5500",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization"
+        }
     }
 })
 
