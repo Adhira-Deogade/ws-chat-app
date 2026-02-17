@@ -24,7 +24,11 @@ io.on('connection', socket => {
         // To send message to all the connected clients,
         // I will use io.emit()
         // socket.broadcast.emit('message', `${socket.id.substring(0,5)}: ${data}`)
-        io.emit('message', `${socket.id.substring(0,5)}: ${data}`)
+        // To send data to only the source client,
+        // I will use socket.emit()
+        // socket.broadcast.emit('message', `${socket.id.substring(0,5)}: ${data}`)
+        // io.emit('message', `${socket.id.substring(0,5)}: ${data}`)
+        socket.emit('message', `${socket.id.substring(0,5)}: ${data}`)
         console.log('I want to broadcast');
     })
 })
