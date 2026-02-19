@@ -1,8 +1,27 @@
-import { createServer } from "http"
+import express from "express"
 import { Server } from "socket.io"
+import path from "path"
+import { fileURLToPath } from "url"
 
-const httpServer = createServer()
-const io = new Server(httpServer, {
+const PORT = process.env.PRODUCTION || 3500
+
+// we are running frontend and backend on the same server
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const app = express()
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+)
+const expressServer = app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
+})
+
+// We are hosting the frontend of the application with express
+// along with the server
+const io = new Server(expressServer, {
     cors: {
         origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
         // Add this line to explicitly set the CORS header
@@ -32,5 +51,3 @@ io.on('connection', socket => {
         console.log('I want to broadcast');
     })
 })
-
-httpServer.listen(3500, () => console.log("Listening on port 3500"))
