@@ -3,7 +3,7 @@ import { Server } from "socket.io"
 import path from "path"
 import { fileURLToPath } from "url"
 
-const PORT = process.env.PRODUCTION || 3500
+const PORT = process.env.PORT || 3500
 
 // we are running frontend and backend on the same server
 const __filename = fileURLToPath(import.meta.url)
@@ -22,15 +22,15 @@ const expressServer = app.listen(PORT, () => {
 // We are hosting the frontend of the application with express
 // along with the server
 const io = new Server(expressServer, {
-    cors: {
-        origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
-        // Add this line to explicitly set the CORS header
-        headers: {
-            "Access-Control-Allow-Origin": "http://localhost:5500",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
-    }
+    // cors: {
+    //     origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
+    //     // Add this line to explicitly set the CORS header
+    //     headers: {
+    //         "Access-Control-Allow-Origin": "http://localhost:5500",
+    //         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    //         "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    //     }
+    // }
 })
 
 
