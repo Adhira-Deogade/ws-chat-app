@@ -30,12 +30,16 @@ socket.on("message", (data) => {
 
 // Start monitoring keyboard key presses
 msgInput.addEventListener('keypress', () => {
-    console.log('keypress event happened')
     socket.emit('activity', socket.id.substring(0,5))
 })
 
 let activityTimer
-socket.on(activity, (name) => {
+socket.on('activity', (name) => {
     activity.textContent = `${name} is typing...`
 
+    // Clear after 3 seconds
+    clearTimeout(activityTimer)
+    activityTimer = setTimeout(() => {
+        activity.textContent = ''
+    }, 3000)
 }) 

@@ -67,8 +67,7 @@ io.on('connection', socket => {
     // Listen for activity
     // name is username
     socket.on('activity', (name) => {
-        console.log(`${name} is typing.....`)
-        io.emit('activity', name)
+        socket.broadcast.emit('activity', name)
     })
 })
 
