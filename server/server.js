@@ -36,6 +36,13 @@ const io = new Server(expressServer, {
 
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
+    // Upon connection, only to user
+    socket.emit('message', 'Welcome to chat app!')
+
+    // Upcon connection to all others
+    socket.broadcast.emit('message', `User ${socket.id.substring(0,5)} connected`)
+
+    // Listening for message event
     socket.on('message', data => {
         console.log(`Got a message ${data}`);
         // I would use broadcast if I want to send data
@@ -47,7 +54,23 @@ io.on('connection', socket => {
         // I will use socket.emit()
         // socket.broadcast.emit('message', `${socket.id.substring(0,5)}: ${data}`)
         // io.emit('message', `${socket.id.substring(0,5)}: ${data}`)
-        socket.emit('message', `${socket.id.substring(0,5)}: ${data}`)
+        io.emit('message', `${socket.id.substring(0,5)}: ${data}`)
         console.log('I want to broadcast');
     })
+
+    // Listening for disconnection
+    // Message to all others
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('message', `User ${socket.id.substring(0,5)} disconnected`)
+    })
+
+    // Listen for activity
+    // name is username
+    socket.on('activity', (name) => {
+        console.log(`${name} is typing.....`)
+        io.emit('activity', name)
+    })
 })
+
+// io.emit - send message to everone connected to the server
+// socket.emit - send message to only the current user/client
